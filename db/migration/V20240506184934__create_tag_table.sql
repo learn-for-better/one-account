@@ -6,8 +6,6 @@ CREATE TABLE tags (
 );
 
 CREATE TABLE expense_tags (
-    created_date TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP NOT NULL,
     expense_id INT REFERENCES expense(id),
     tag_id INT REFERENCES tags(id),
     PRIMARY KEY (expense_id, tag_id)
