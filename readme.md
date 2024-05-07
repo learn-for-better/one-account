@@ -1,38 +1,37 @@
 Require:
 1. Docker@20.0.6
-2. PostgreSQL@latest
+2. Node@16
 
 
 ## Local deployment
-### data base
+### Data base
 #### Start with docker-compose
 ```shell
 docker-compose up -d
 ```
 #### Start with shell script
 ```
-./scripts/migrate.sh
+./scripts/run.sh
 ```
-Connect PostgreSQL
+* Connect PostgreSQL
 ```
 psql -h localhost -p 5432 -U postgres -W
 ```
-Adminer
+* Run server
+```
+node ./app/server.js
+```
+### Adminer
 open Adminer at http://localhost:8080 and enter the following information:
 * System: PostgreSQL
 * Server: one_account_database
 * Username: postgres
 * Password: admin
 * Database: one_account_database
-### python env
-```shell
-python3 -m venv one_account
-python3 -m one_account pip install psycopg2-binary
-```
 
 ## API
-### /expense
-POST /example
+### POST /example
+*request body*
 ```json
 {
   "description": "罗技 MX Master3S 黑",

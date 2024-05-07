@@ -5,7 +5,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const pool = new Pool({
-  host: 'localhost',
+  host: 'one_account_database',
   database: 'postgres',
   user: 'postgres',
   password: 'admin',
