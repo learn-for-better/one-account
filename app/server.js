@@ -2,6 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const app = express();
+
+const Knex = require('knex');
+const knexConfig = require('./knexfile');
+const { Model } = require('objection');
+const {Expense} = require('./models/Expense');
+
 app.use(bodyParser.json());
 
 const dbHost = process.env.DB_HOST || 'localhost';
@@ -11,6 +17,16 @@ const pool = new Pool({
   database: 'postgres',
   user: 'postgres',
   password: 'admin',
+});
+
+// Initialize knex.
+const knex = Knex(knexConfig.default);
+Model.knex(knex);
+
+app.get('/test', async (req, res) => {
+  const result = await Expense.query();
+  console.log(result);
+  res.json({ message: 'Hello World' });
 });
 
 app.post('/expense', async (req, res) => {

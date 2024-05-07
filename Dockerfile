@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY ./app /app
 
-RUN npm install express body-parser pg
+RUN npm install
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
