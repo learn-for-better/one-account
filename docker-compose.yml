@@ -1,0 +1,45 @@
+version: '3'
+services:
+  one_account_database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./dockers/one-account/postgresql:/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - one_network
+
+  my_adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - one_network
+
+  flyway:
+    image: flyway/flyway
+    command: migrate
+    volumes:
+      - ./db/migration:/flyway/sql
+    environment:
+      FLYWAY_URL: jdbc:postgresql://one_account_database:5432/postgres
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: admin
+    depends_on:
+      - one_account_database
+    networks:
+      - one_network
+
+  my_python_app:
+    build: .
+    command: python server.py
+    ports:
+      - 5000:5000
+    depends_on:
+      - one_account_database
+    networks:
+      - one_network
+networks:
+  one_network:
