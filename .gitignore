@@ -1,2 +1,3 @@
 dockers/*
 resources
+app/node_modules
