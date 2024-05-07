@@ -22,7 +22,6 @@ app.post('/expense', async (req, res) => {
       [now, now, now, description, amount]
     );
     const expenseId = expenseResult.rows[0].id;
-
     for (let tag of tags) {
       let tagResult = await client.query('SELECT id FROM tags WHERE tag = $1', [tag]);
 
@@ -34,7 +33,8 @@ app.post('/expense', async (req, res) => {
       }
 
       const tagId = tagResult.rows[0].id;
-      await client.query('INSERT INTO expense_tags (expense_id, tag_id) VALUES ($1, $2)', [expenseId, tagId]);
+
+      await client.query('INSERT INTO expense_tags (created_date, updated_date, expense_id, tag_id) VALUES ($1, $2, $3, $4)', [now, now, expenseId, tagId]);
     }
 
     res.json({ id: expenseId });
