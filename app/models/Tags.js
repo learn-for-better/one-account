@@ -8,13 +8,13 @@ class Tags extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['tag'],
+      required: ['name'],
 
       properties: {
         id: { type: 'integer' },
         created_date: { type: 'string', format: 'date-time' },
         updated_date: { type: 'string', format: 'date-time' },
-        tag: { type: 'string' }
+        name: { type: 'string' }
       }
     };
   }

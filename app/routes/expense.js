@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
             date: now,
             description,
             amount,
-            tags: tags.map(tag => ({created_date: now, updated_date: now, tag: tag }))
+            tags: tags.map(tag => ({created_date: now, updated_date: now, name: tag }))
         });
     });
     
@@ -24,8 +24,9 @@ router.get('/', async (req, res) => {
     const expenses = await Expense.query()
     .withGraphFetched('tags')
     .modifyGraph('tags', builder => {
-        builder.select('id', 'tag');
+        builder.select('id', 'name');
     });
+    
     res.json(expenses);
 });
 
