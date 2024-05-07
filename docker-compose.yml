@@ -33,6 +33,8 @@ services:
       - one_network
 
   my_server:
+    emvironment:
+      DB_HOST: one_account_database
     build: .
     ports:
       - 3000:3000

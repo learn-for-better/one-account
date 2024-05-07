@@ -4,8 +4,10 @@ const { Pool } = require('pg');
 const app = express();
 app.use(bodyParser.json());
 
+const dbHost = process.env.DB_HOST || 'localhost';
+
 const pool = new Pool({
-  host: 'one_account_database',
+  host: dbHost,
   database: 'postgres',
   user: 'postgres',
   password: 'admin',
