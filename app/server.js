@@ -6,6 +6,13 @@ const Knex = require('knex');
 const knexConfig = require('./knexfile');
 const { Model } = require('objection');
 
+const port = 3003;
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'http://localhost:3000' // only allow requests from this origin
+}));
+
 app.use(bodyParser.json());
 
 // Initialize knex.
@@ -13,6 +20,6 @@ Model.knex(Knex(knexConfig.default));
 
 app.use('/expense', require('./routes/expense'));
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(port, () => {
+  console.log('Server is running on port ', port);
 });
