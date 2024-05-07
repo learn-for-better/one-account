@@ -1,6 +1,6 @@
 CREATE TABLE expense (
     id SERIAL PRIMARY KEY,
-    crated_date TIMESTAMP NOT NULL,
+    created_date TIMESTAMP NOT NULL,
     updated_date TIMESTAMP NOT NULL,
     date TIMESTAMP NOT NULL,
     description TEXT,
