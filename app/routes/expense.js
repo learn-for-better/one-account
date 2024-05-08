@@ -6,27 +6,41 @@ router.post('/', async (req, res) => {
     const { description, amount, tags } = req.body;
     const date = new Date();
     const now = date.toISOString();
-    const insertedGraph = await Expense.transaction(async trx => { 
-        return Expense.query(trx).insertGraph({
+    const insertedGraph = await Expense.transaction(async trx => {
+        const existingTags = await trx('tags');
+        const existingTagNames = new Set(existingTags.map(tag => tag.name));
+        const newTagNames = tags.filter(tag => !existingTagNames.has(tag));
+
+        if (newTagNames.length > 0) {
+            await trx('tags').insert(newTags.map(tag => ({ created_date: now, updated_date: now, name: tag }))).returning('id')
+        }
+
+        const relatedTags = await trx('tags').whereIn('name', tags);
+        const expense = await Expense.query(trx).insertGraph({
             created_date: now,
             updated_date: now,
             date: now,
             description,
-            amount,
-            tags: tags.map(tag => ({created_date: now, updated_date: now, name: tag }))
+            amount
         });
+
+        for (let id of relatedTags.map(tag => tag.id)) {
+           await expense.$relatedQuery('tags', trx).relate(id);
+        }
+
+        return expense;
     });
-    
+
     res.json(insertedGraph.$id());
-    });
+});
 
 router.get('/', async (req, res) => {
     const expenses = await Expense.query()
-    .withGraphFetched('tags')
-    .modifyGraph('tags', builder => {
-        builder.select('id', 'name');
-    });
-    
+        .withGraphFetched('tags')
+        .modifyGraph('tags', builder => {
+            builder.select('id', 'name');
+        });
+
     res.json(expenses);
 });
 
