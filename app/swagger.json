@@ -1,0 +1,135 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Expense API",
+      "description": "API for managing expenses"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3003"
+      }
+    ],
+    "paths": {
+      "/expense": {
+        "get": {
+          "summary": "Get all expenses",
+          "tags": ["Expense"],
+          "responses": {
+            "200": {
+              "description": "List of expenses",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Expense"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new expense",
+          "tags": ["Expense"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Created expense",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Expense"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Expense": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "created_date": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Expense creation date"
+            },
+            "updated_date": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Expense update date"
+            },
+            "date": {
+              "type": "string",
+              "format": "date",
+              "description": "Expense date"
+            },
+            "description": {
+              "type": "string",
+              "description": "Expense description"
+            },
+            "amount": {
+              "type": "number",
+              "description": "Expense amount"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Tag"
+              },
+              "description": "Expense tags"
+            }
+          }
+        },
+        "Tag": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string",
+              "description": "Tag name"
+            }
+          }
+        },
+        "ExpenseInput": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "Expense description"
+            },
+            "amount": {
+              "type": "number",
+              "description": "Expense amount"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Expense tags"
+            }
+          }
+        }
+      }
+    }
+  }

@@ -42,15 +42,7 @@ open Adminer at http://localhost:8080 and enter the following information:
 docker exec -t oneaccount-one_account_database-1 pg_dump -U postgres -d postgres > db_backup.sql
 ```
 ## API
-### POST /example
-*request body*
-```json
-{
-  "description": "罗技 MX Master3S 黑",
-  "amount": 449.00,
-  "tags": ["淘宝", "电脑外设"]
-}
-```
+[swagger](http://localhost:3003/api-docs)
 
 # References
 [Express_Nodejs](https://developer.mozilla.org/zh-CN/docs/Learn/Server-side/Express_Nodejs/development_environment)
