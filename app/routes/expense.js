@@ -44,4 +44,19 @@ router.get('/', async (req, res) => {
     res.json(expenses);
 });
 
+router.delete('/:id', async (req, res) => {
+    const id = req.params.id;
+
+    const expense = await Expense.query().findById(id);
+
+    if (expense) {
+        await expense.$relatedQuery('tags').unrelate();
+
+        const deletedCount = await Expense.query().deleteById(id);
+
+        res.status(202).json(deletedCount);
+    } else {
+        res.status(404).send({ error: 'Expense not found' });
+    }
+});
 module.exports = router;
