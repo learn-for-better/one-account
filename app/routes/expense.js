@@ -6,10 +6,12 @@ router.post('/', async (req, res) => {
     const { description, amount, tags } = req.body;
     const date = new Date();
     const now = date.toISOString();
+
+    const splitTags = new Set(tags.flatMap(tag => tag.split(',').map(tag => tag.trim())));
     const insertedGraph = await Expense.transaction(async trx => {
         const existingTags = await trx('tags');
         const existingTagNames = new Set(existingTags.map(tag => tag.name));
-        const newTagNames = tags.filter(tag => !existingTagNames.has(tag));
+        const newTagNames = splitTags.filter(tag => !existingTagNames.has(tag));
 
         if (newTagNames.length > 0) {
             await trx('tags').insert(newTagNames.map(tag => ({ created_date: now, updated_date: now, name: tag }))).returning('id')
