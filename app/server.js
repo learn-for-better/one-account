@@ -25,7 +25,8 @@ app.use(bodyParser.json());
 // Initialize knex.
 Model.knex(Knex(knexConfig.default));
 
-app.use('/expense', require('./routes/expense'));
+app.use('/expenses', require('./routes/expense'));
+app.use('/tags', require('./routes/tag'));
 
 app.listen(port, () => {
   console.log('Server is running on port ', port);

@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
         const newTagNames = tags.filter(tag => !existingTagNames.has(tag));
 
         if (newTagNames.length > 0) {
-            await trx('tags').insert(newTags.map(tag => ({ created_date: now, updated_date: now, name: tag }))).returning('id')
+            await trx('tags').insert(newTagNames.map(tag => ({ created_date: now, updated_date: now, name: tag }))).returning('id')
         }
 
         const relatedTags = await trx('tags').whereIn('name', tags);
@@ -44,4 +44,4 @@ router.get('/', async (req, res) => {
     res.json(expenses);
 });
 
-module.exports = router;    
+module.exports = router;

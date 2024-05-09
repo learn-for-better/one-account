@@ -31,16 +31,16 @@ else
 fi
 
 # Check if the PostgreSQL container already exists
-if ! docker ps | grep -q 'one_account_database'; then
+if ! docker ps -a | grep -q 'one_account_database'; then
     # Run your database container in the 'one_network' network
     docker run --network=one_network --name=one_account_database -e POSTGRES_PASSWORD=admin -v "$DOCKER_POSTGRESQL_DIR:/postgresql/data" -p 5432:5432  -d postgres
-else 
+elif ! docker ps | grep -q 'one_account_database'; then
     echo "PostgreSQL container 'one_account_database' already exists!"
-    docker start one_account_database
+    docker start one_account_database   
 fi
 
 # Check if the Adminer container already exists
-if ! docker ps | grep -q 'my_adminer'; then
+if ! docker ps -a | grep -q 'my_adminer'; then
     # Run the Adminer container in the 'my_network' network
     docker run --network=one_network --name=my_adminer -p 8080:8080 -d adminer
     # Output the database connection information for Adminer
@@ -50,6 +50,9 @@ if ! docker ps | grep -q 'my_adminer'; then
     echo "Username: postgres"
     echo "Password: admin"
     echo "Database: one_account_database"
+elif ! docker ps | grep -q 'my_adminer'; then
+    echo "Adminer container 'my_adminer' already exists!"
+    docker start my_adminer
 else 
     echo "Adminer container 'my_adminer' already exists!"
 fi
