@@ -76,10 +76,39 @@
               "type": "integer"
             }
           }
+        ]
+      }
+    },
+    "/expenses/page/{page}": {
+      "get": {
+        "summary": "Get expenses by page",
+        "tags": [
+          "Expense"
         ],
-        "responses": {
-          "202": {
-            "description": "Deleted expense"
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"List of expenses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Expense"
+                  }
+                }
+              }
+            
+            }
           }
         }
       }

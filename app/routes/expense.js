@@ -11,8 +11,8 @@ router.post('/', async (req, res) => {
     const insertedGraph = await Expense.transaction(async trx => {
         const existingTags = await trx('tags');
         const existingTagNames = new Set(existingTags.map(tag => tag.name));
-        const inputTagNames =  Array.from(splitTags);
-        
+        const inputTagNames = Array.from(splitTags);
+
         const newTagNames = inputTagNames.filter(tag => !existingTagNames.has(tag));
 
         if (newTagNames.length > 0) {
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
         });
 
         for (let id of relatedTags.map(tag => tag.id)) {
-           await expense.$relatedQuery('tags', trx).relate(id);
+            await expense.$relatedQuery('tags', trx).relate(id);
         }
 
         return expense;
@@ -46,6 +46,26 @@ router.get('/', async (req, res) => {
         });
 
     res.json(expenses);
+});
+
+router.get('/page/:page', async (req, res) => {
+    const page = req.params.page || 1;
+    const pageSize = 10;
+
+    try {
+        const expenses = await Expense.query()
+            .withGraphFetched('tags')
+            .modifyGraph('tags', builder => {
+                builder.select('id', 'name');
+            })
+            .page(page - 1, pageSize);
+        res.json(expenses);
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+        console.log(error);
+    }
+
+
 });
 
 router.delete('/:id', async (req, res) => {
