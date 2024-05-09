@@ -11,13 +11,15 @@ router.post('/', async (req, res) => {
     const insertedGraph = await Expense.transaction(async trx => {
         const existingTags = await trx('tags');
         const existingTagNames = new Set(existingTags.map(tag => tag.name));
-        const newTagNames = splitTags.filter(tag => !existingTagNames.has(tag));
+        const inputTagNames =  Array.from(splitTags);
+        
+        const newTagNames = inputTagNames.filter(tag => !existingTagNames.has(tag));
 
         if (newTagNames.length > 0) {
             await trx('tags').insert(newTagNames.map(tag => ({ created_date: now, updated_date: now, name: tag }))).returning('id')
         }
 
-        const relatedTags = await trx('tags').whereIn('name', tags);
+        const relatedTags = await trx('tags').whereIn('name', inputTagNames);
         const expense = await Expense.query(trx).insertGraph({
             created_date: now,
             updated_date: now,
