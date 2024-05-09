@@ -7,7 +7,7 @@ router.post('/', async (req, res) => {
     const date = new Date();
     const now = date.toISOString();
 
-    const splitTags = new Set(tags.flatMap(tag => tag.split(',').map(tag => tag.trim())));
+    const splitTags = new Set(tags.flatMap(tag => tag.split(/,|，/).map(tag => tag.trim())));
     const insertedGraph = await Expense.transaction(async trx => {
         const existingTags = await trx('tags');
         const existingTagNames = new Set(existingTags.map(tag => tag.name));
