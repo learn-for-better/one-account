@@ -33,11 +33,11 @@ services:
       - one_network
 
   my_server:
-    emvironment:
+    environment:
       DB_HOST: one_account_database
     build: .
     ports:
-      - 3000:3000
+      - 3003:3003
     depends_on:
       - one_account_database
     networks:
