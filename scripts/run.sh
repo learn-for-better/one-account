@@ -33,7 +33,7 @@ fi
 # Check if the PostgreSQL container already exists
 if ! docker ps -a | grep -q 'one_account_database'; then
     # Run your database container in the 'one_network' network
-    docker run --network=one_network --name=one_account_database -e POSTGRES_PASSWORD=admin -v "$DOCKER_POSTGRESQL_DIR:/postgresql/data" -p 5432:5432  -d postgres
+    docker run --network=one_network --name=one_account_database -e POSTGRES_PASSWORD=admin -p 5432:5432  -d postgres
 elif ! docker ps | grep -q 'one_account_database'; then
     echo "PostgreSQL container 'one_account_database' already exists!"
     docker start one_account_database   
