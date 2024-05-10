@@ -11,7 +11,6 @@ export FLYWAY_LOCATIONS=filesystem:/db/migration
 # Get the script directory
 SCRIPT_DIR=$(dirname "$0")
 # Get the absolute path
-DOCKER_POSTGRESQL_DIR=$(realpath "$SCRIPT_DIR/../dockers/one-account/postgresql")
 MIGRATION_DIR=$(realpath "$SCRIPT_DIR/../db/migration")
 
 # Check if the Flyway Docker image already exists

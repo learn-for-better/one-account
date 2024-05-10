@@ -16,9 +16,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const port = 3003;
 const cors = require('cors');
 
-app.use(cors({
-  origin: 'http://localhost:3000' // only allow requests from this origin
-}));
+app.use(cors());
 
 app.use(bodyParser.json());
 
