@@ -25,6 +25,7 @@ Model.knex(Knex(knexConfig.default));
 
 app.use('/expenses', require('./routes/expense'));
 app.use('/tags', require('./routes/tag'));
+app.use('/deposits', require('./routes/deposit'));
 
 app.listen(port, () => {
   console.log('Server is running on port ', port);
