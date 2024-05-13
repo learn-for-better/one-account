@@ -135,6 +135,50 @@
           }
         }
       }
+    },
+    "/deposits": {
+      "get": {
+        "summary": "Get all deposits",
+        "tags": [
+          "Deposits"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of deposits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Deposit"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new deposit",
+        "tags": [
+          "Deposits"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type":"array",
+                "$ref": "#/components/schemas/DepositInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created deposit"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -206,6 +250,24 @@
               "type": "string"
             },
             "description": "Expense tags"
+          }
+        }
+      },
+      "DepositInput": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": {
+              "type": "string"
+            },
+            "amount": {
+              "type": "number"
+            }
           }
         }
       }
