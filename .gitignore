@@ -1,3 +1,4 @@
 dockers/*
 resources/*
 app/node_modules
+db_backup.sql

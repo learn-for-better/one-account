@@ -37,9 +37,9 @@ open Adminer at http://localhost:8080 and enter the following information:
 
 ## Backup data
 ### Export data from docker volume
-`oneaccount-one_account_database-1` need replace to your container name
+`one_account_database` need replace to your container name
 ```shell
-docker exec -t oneaccount-one_account_database-1 pg_dump -U postgres -d postgres > db_backup.sql
+docker exec -t one_account_database pg_dump -U postgres -d postgres > db_backup.sql
 ```
 ## API
 [swagger](http://localhost:3003/api-docs)
