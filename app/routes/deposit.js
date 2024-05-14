@@ -3,28 +3,41 @@ const router = express.Router();
 const Deposit = require('../models/Deposit');
 
 router.post('/', async (req, res) => {
-    const deposits = req.body;
-    const date = new Date();
-    const now = date.toISOString();
-
-    if (deposits && deposits.length > 0) {
-        try {
-            const insertedGraph = await Deposit.transaction(async trx => {
-                await Deposit.query(trx).insertGraph(deposits.map(deposit => {
-                    return {
-                        date: now,
-                        amount: deposit.amount,
-                        description: deposit.description
-                    }
-                }));
-            });
-
-            res.status(201).json(insertedGraph);
-        } catch (e) {
-            console.log(e);
-            res.status(500).json({ error: 'Internal Server Error' });
+    const body = req.body;
+    try {
+        if (body.length === 0) {
+            res.status(400).json({ error: 'Bad Request' });
+            return;
         }
+        for (let i = 0; i < body.length; i++) {
+            const date = new Date(body[i].date);
+            const deposits = body[i].records;
+            const isoDate = date.toISOString();
+
+            if (deposits && deposits.length > 0) {
+                try {
+                    const insertedGraph = await Deposit.transaction(async trx => {
+                        await Deposit.query(trx).upsertGraph(deposits.map(deposit => {
+                            return {
+                                date: isoDate,
+                                amount: deposit.amount,
+                                description: deposit.description
+                            }
+                        }), { insertMissing: true });
+                    });
+
+                    res.status(201).json(insertedGraph);
+                } catch (e) {
+                    console.log(e);
+                    res.status(500).json({ error: 'Internal Server Error' });
+                }
+            }
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
+
 });
 
 router.get('/', async (req, res) => {
